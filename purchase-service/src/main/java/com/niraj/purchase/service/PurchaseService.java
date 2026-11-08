@@ -2,25 +2,44 @@ package com.niraj.purchase.service;
 
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
+
 
 @Service
 public class PurchaseService {
-private final RestTemplate restTemplate;
 
-public PurchaseService(RestTemplate restTemplate){
-    this.restTemplate=restTemplate;
+
+private final RestClient restClient;
+
+public PurchaseService(RestClient restClient){
+
+    this.restClient=restClient;
     }
 
     public String purchaseProduct(int productId){
 
     String url="http://localhost:8081/products/"+productId;
 
-    String response=restTemplate.getForObject(url,String.class);
+    //String response=restTemplate.getForObject(url,String.class);
+
+        String response=restClient.get()
+            .uri("http://localhost:8081/products/{productId}",productId)
+            .retrieve()
+            .body(String.class);
 
     if(response.contains("Available")){
         return "Purchase succcessful:"+response;
     }
     return "purchase failed:"+response;
+    }
+
+    public String addProduct(String productName){
+        String response=restClient.post()
+                .uri("http://localhost:8081/products")
+                .body(productName)
+                .retrieve()
+                .body(String.class);
+
+        return response;
     }
 }

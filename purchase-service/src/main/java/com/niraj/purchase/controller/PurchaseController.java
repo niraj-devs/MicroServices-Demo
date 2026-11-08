@@ -12,12 +12,18 @@ public class PurchaseController {
     private final PurchaseService purchaseService;
 
     public PurchaseController(PurchaseService purchaseService) {
+
         this.purchaseService = purchaseService;
     }
 
     @PostMapping ("/{productId}")
     public String purchaseProduct(@PathVariable int productId) {
     return purchaseService.purchaseProduct(productId);
+    }
+
+    @PostMapping("/add/{productName}")
+    public String addProduct(@PathVariable String productName){
+        return purchaseService.addProduct(productName);
     }
 
 

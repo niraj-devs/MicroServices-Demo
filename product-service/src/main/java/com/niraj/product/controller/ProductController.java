@@ -15,4 +15,9 @@ public class ProductController {
 
         return "Product out of Stock";
     }
+
+    @PostMapping
+    public String addProduct(@RequestBody String productName){
+        return "Product received:"+productName;
+    }
 }
