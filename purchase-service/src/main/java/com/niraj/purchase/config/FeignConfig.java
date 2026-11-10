@@ -13,5 +13,9 @@ public class FeignConfig {
 
         return new ProductErrorDecoder();
     }
+    @Bean
+    public Retryer retryer(){
+        return new Retryer.Default(1000,2000,3);
 
+    }
 }
