@@ -2,8 +2,7 @@ package com.niraj.purchase.service;
 
 
 import com.niraj.purchase.client.ProductClient;
-import feign.FeignException;
-import org.springframework.http.HttpStatus;
+import com.niraj.purchase.exception.ProductServiceException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -63,10 +62,10 @@ public class PurchaseService {
                 return ResponseEntity.ok("Purchase successful:" + response);
             }
             return ResponseEntity.ok("purchase failed:" + response);
-        } catch (FeignException.NotFound e) {
+        } catch (ProductServiceException e) {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Purchase failed:Product not found");
+                    .status(e.getStatusCode())
+                    .body("Purchase failed: " + e.getMessage());
         }
     }
 

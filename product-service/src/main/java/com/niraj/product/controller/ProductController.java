@@ -14,6 +14,11 @@ public class ProductController {
         if (id == 1) {
             return ResponseEntity.ok("Laptop is Available");
         }
+        if (id == 2) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal server error");
+        }
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
