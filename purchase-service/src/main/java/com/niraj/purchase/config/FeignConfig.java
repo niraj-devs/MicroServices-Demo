@@ -1,6 +1,7 @@
 package com.niraj.purchase.config;
 
 import com.niraj.purchase.exception.ProductErrorDecoder;
+import feign.Retryer;
 import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 public class FeignConfig {
     @Bean
     public ErrorDecoder errorDecoder(){
+
         return new ProductErrorDecoder();
     }
+
 }

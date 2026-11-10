@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> getProduct(@PathVariable int id) {
+    public ResponseEntity<String> getProduct(@PathVariable int id) throws InterruptedException{
 
         if (id == 1) {
             return ResponseEntity.ok("Laptop is Available");

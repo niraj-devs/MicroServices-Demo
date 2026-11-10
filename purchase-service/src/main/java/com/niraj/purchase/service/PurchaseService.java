@@ -3,6 +3,7 @@ package com.niraj.purchase.service;
 
 import com.niraj.purchase.client.ProductClient;
 import com.niraj.purchase.exception.ProductServiceException;
+import feign.RetryableException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -63,9 +64,15 @@ public class PurchaseService {
             }
             return ResponseEntity.ok("purchase failed:" + response);
         } catch (ProductServiceException e) {
+
             return ResponseEntity
                     .status(e.getStatusCode())
                     .body("Purchase failed: " + e.getMessage());
+        }catch(RetryableException e) {
+
+            return ResponseEntity
+                    .status(503)
+                    .body("Product Service is currently unavailable.Please try again later.");
         }
     }
 
