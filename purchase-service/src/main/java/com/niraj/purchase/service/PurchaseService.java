@@ -2,8 +2,10 @@ package com.niraj.purchase.service;
 
 
 import com.niraj.purchase.client.ProductClient;
+import feign.FeignException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
 
 
 @Service
@@ -43,7 +45,7 @@ public class PurchaseService {
 //        return response;
 //    }
 
-    public String purchaseProduct(int productId){
+    public ResponseEntity<String> purchaseProduct(int productId) {
 
 //String url="http://localhost:8081/products/"+productId;
 
@@ -54,12 +56,18 @@ public class PurchaseService {
 //            .retrieve()
 //            .body(String.class);
 
-        String response=productClient.getProduct((long)productId);
+        try {
+            String response = productClient.getProduct((long) productId);
 
-    if(response.contains("Available")){
-        return "Purchase succcessful:"+response;
-    }
-    return "purchase failed:"+response;
+            if (response.contains("Available")) {
+                return ResponseEntity.ok("Purchase successful:" + response);
+            }
+            return ResponseEntity.ok("purchase failed:" + response);
+        } catch (FeignException.NotFound e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Purchase failed:Product not found");
+        }
     }
 
     private final ProductClient productClient;

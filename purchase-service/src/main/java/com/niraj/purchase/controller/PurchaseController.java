@@ -1,10 +1,9 @@
 package com.niraj.purchase.controller;
 
 import com.niraj.purchase.service.PurchaseService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/purchases")
@@ -16,9 +15,15 @@ public class PurchaseController {
         this.purchaseService = purchaseService;
     }
 
-    @PostMapping ("/{productId}")
-    public String purchaseProduct(@PathVariable int productId) {
-    return purchaseService.purchaseProduct(productId);
+
+    @GetMapping("/purchase/{id}")
+    public ResponseEntity<String> purchase(@PathVariable Long id) {
+        return purchaseService.purchaseProduct(id.intValue());
+    }
+
+    @PostMapping("/{productId}")
+    public ResponseEntity<String> purchaseProduct(@PathVariable int productId) {
+        return purchaseService.purchaseProduct(productId);
     }
 
     @PostMapping("/add/{productName}")
